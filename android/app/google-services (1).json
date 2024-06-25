@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "53307414469",
+    "project_id": "stretching-studio-1eb66",
+    "storage_bucket": "stretching-studio-1eb66.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53307414469:android:c83f0eb18782a9546addac",
+        "android_client_info": {
+          "package_name": "com.example.flutter_stretching_studio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkQKjIzC6e1KMnHVm9Num37FxBsbuL95c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
