@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stretching_studio/colors.dart';
 import 'package:flutter_stretching_studio/database/firebase_auth/auth_service.dart';
 import 'package:flutter_stretching_studio/global.dart' as globals;
 
@@ -43,9 +44,6 @@ class _NavbarState extends State<Navbar> {
 
   @override
   Widget build(BuildContext context) {
-    
-    
-   
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -57,13 +55,14 @@ class _NavbarState extends State<Navbar> {
               auth.currentUser != null? userDoc['name'] : '',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.white
               ),
              ),
              accountEmail: Text(auth.currentUser == null? '' : auth.currentUser!.email.toString()),
              currentAccountPicture: CircleAvatar(
+              backgroundColor: appBarBackground,
               child:
               ClipOval(
+              
                 child: auth.currentUser != null? 
               userDoc['image'] == ''? 
                     (globals.selectImage == null? Image.asset('assets/person.png') 
@@ -79,44 +78,26 @@ class _NavbarState extends State<Navbar> {
              ),
              decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/background.jpg'),
+                image: AssetImage('assets/stretchingBackground.jpg'),
                 fit: BoxFit.cover
               ),
               
              ),
           ),
-          ListTile(
-            minTileHeight: 50,
-            leading: const Icon(Icons.home, color: Colors.white,),
-            title: const Text("Главная страница", style: TextStyle(
-              color: Colors.white
-            ),),
-            onTap: (){
-              Navigator.pushReplacementNamed(context, '/');
-            },
-            
-          ),
-          const Divider(),
           auth.currentUser != null?
           ListTile(
-            minTileHeight: 50,
-            leading: const Icon(Icons.person, color: Colors.white,),
-            title: const Text("Мой профиль", style: TextStyle(
-              color: Colors.white
-            ),),
+            leading: const Icon(Icons.person),
+            title: const Text("Мой профиль"),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/profile');
             }
           )
           :
               const SizedBox(),
-          auth.currentUser != null? const Divider() : const SizedBox(),
           ListTile(
-            minTileHeight: 50,
-            leading: const SizedBox(),
-            title: const Text("Игровые ПК", style: TextStyle(color: Colors.white),),
+            leading: Icon(Icons.person_2),
+            title: const Text("Преподаватели"),
             onTap: (){
-              globals.typeItem = 'ПК';
               Navigator.pushReplacementNamed(context, '/list');
             },
             
@@ -124,76 +105,47 @@ class _NavbarState extends State<Navbar> {
           
           
           ListTile(
-            minTileHeight: 50,
-            leading: const SizedBox(),
-            title: const Text("Ноутбуки", style: TextStyle(color: Colors.white),),
+            
+            leading: Icon(Icons.my_library_books_rounded),
+            title: const Text("Мои занятия"),
             onTap: (){
-              globals.typeItem = 'Ноутбук';
               Navigator.pushReplacementNamed(context, '/list');
             },
             
           ),
-          
-         
           ListTile(
-            minTileHeight: 50,
-            leading: const SizedBox(),
-            title: const Text("Видеокарты", style: TextStyle(color: Colors.white),),
-            onTap: (){
-              globals.typeItem = 'Видеокарта';
-              Navigator.pushReplacementNamed(context, '/list');
-            },
             
-          ),
-          
-          
-          ListTile(
-            minTileHeight: 50,
             leading: const SizedBox(),
-            title: const Text("Аксессуары", style: TextStyle(color: Colors.white),),
-            onTap: (){
-              globals.typeItem = 'Аксессуар';
-              Navigator.pushReplacementNamed(context, '/list');
-            },
-            
-          ),
-          
-          const Divider(),
-          ListTile(
-            minTileHeight: 50,
-            leading: const SizedBox(),
-            title: const Text("О нас", style: TextStyle(color: Colors.white),),
+            title: const Text("О нас"),
             onTap: (){
               Navigator.pushReplacementNamed(context, '/about');
             },
             
           ),
-          const Divider(),
           ListTile(
-            minTileHeight: 50,
+            
             leading: const SizedBox(),
-            title: const Text("Контакты", style: TextStyle(color: Colors.white),),
+            title: const Text("Контакты"),
             onTap: (){
               Navigator.pushReplacementNamed(context, '/contacts');
             },
             
           ),
           
-          const Divider(),
 
           auth.currentUser != null?
           ListTile(
-            minTileHeight: 50,
-            leading: const Icon(Icons.logout, color: Colors.white),
-            title: const Text("Выйти", style: TextStyle(color: Colors.white),),
+            
+            leading: const Icon(Icons.logout_rounded),
+            title: const Text("Выйти"),
             onTap: (){
               AuthService().logOut();
               Navigator.pushReplacementNamed(context, '/auth');
             },
             
           ) : ListTile(
-            leading: const Icon(Icons.login, color: Colors.white),
-            title: const Text("Войти", style: TextStyle(color: Colors.white),),
+            leading: const Icon(Icons.login),
+            title: const Text("Войти"),
             onTap: (){
               Navigator.pushReplacementNamed(context, '/auth');
             },
