@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_stretching_studio/database/collections/ProfileCollection';
 import 'package:flutter_stretching_studio/database/firebase_auth/user.dart';
+import 'package:flutter_stretching_studio/global.dart' as globals;
 
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final ProfileCollection profile = ProfileCollection();
 
   Future<UserModel?> signIn(String email, String password) async {
     try {
@@ -23,6 +27,7 @@ class AuthService {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       User user = userCredential.user!;
+
       return UserModel.fromFirebase(user);
     } catch (e) {
       return null;
@@ -31,6 +36,7 @@ class AuthService {
 
   Future logOut() async {
     try {
+      globals.userProfile = null;
       return await _firebaseAuth.signOut();
     } catch (e) {
       return null;

@@ -55,30 +55,35 @@ class _NavbarState extends State<Navbar> {
               auth.currentUser != null? userDoc['name'] : '',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
+                 fontFamily: "bebasRegular", color: Colors.white, fontSize: 20,
               ),
              ),
-             accountEmail: Text(auth.currentUser == null? '' : auth.currentUser!.email.toString()),
-             currentAccountPicture: CircleAvatar(
-              backgroundColor: appBarBackground,
-              child:
-              ClipOval(
-              
-                child: auth.currentUser != null? 
-              userDoc['image'] == ''? 
-                    (globals.selectImage == null? Image.asset('assets/person.png') 
-                    : 
-                    Image.file(globals.selectImage!, width: 200, height: 200, fit: BoxFit.cover,)) 
-                    : Image.network(userDoc['image'],
-                    width: 200,
-                    height: 200,
-                    fit: BoxFit.cover,)
-                :
-                Image.asset('assets/person.png')
-              ),
+             accountEmail: Text(auth.currentUser == null? '' : auth.currentUser!.email.toString(),
+              style: const TextStyle(fontFamily: "bebasRegular", color: Colors.white, fontSize: 20),),
+             currentAccountPicture: Container(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+               child: CircleAvatar(
+                backgroundColor: appBarBackground,
+                child:
+                ClipOval(
+                
+                  child: auth.currentUser != null? 
+                userDoc['image'] == ''? 
+                      (globals.selectImage == null? Image.asset('assets/images/person.png') 
+                      : 
+                      Image.file(globals.selectImage!, width: 200, height: 200, fit: BoxFit.cover,)) 
+                      : Image.network(userDoc['image'],
+                      width: 200,
+                      height: 200,
+                      fit: BoxFit.cover,)
+                  :
+                  Image.asset('assets/images/person.png')
+                ),
+               ),
              ),
              decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/stretchingBackground.jpg'),
+                image: AssetImage('assets/images/studio.jpeg'),
                 fit: BoxFit.cover
               ),
               
@@ -86,8 +91,9 @@ class _NavbarState extends State<Navbar> {
           ),
           auth.currentUser != null?
           ListTile(
-            leading: const Icon(Icons.person),
-            title: const Text("Мой профиль"),
+            leading: const Icon(Icons.person_pin_rounded, color: appBarBackground,),
+            title: const Text("Мой профиль",
+            style: TextStyle(fontFamily: "bebasRegular", color: appBarBackground, fontSize: 20)),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/profile');
             }
@@ -95,8 +101,9 @@ class _NavbarState extends State<Navbar> {
           :
               const SizedBox(),
           ListTile(
-            leading: Icon(Icons.person_2),
-            title: const Text("Преподаватели"),
+            leading: const Icon(Icons.person_2, color: appBarBackground,),
+            title: const Text("Преподаватели",
+             style: TextStyle(fontFamily: "bebasRegular", color: appBarBackground, fontSize: 20)),
             onTap: (){
               Navigator.pushReplacementNamed(context, '/list');
             },
@@ -106,8 +113,8 @@ class _NavbarState extends State<Navbar> {
           
           ListTile(
             
-            leading: Icon(Icons.my_library_books_rounded),
-            title: const Text("Мои занятия"),
+            leading: const Icon(Icons.my_library_books_rounded, color: appBarBackground,),
+            title: const Text("Мои занятия", style: TextStyle(fontFamily: "bebasRegular", color: appBarBackground, fontSize: 20),),
             onTap: (){
               Navigator.pushReplacementNamed(context, '/list');
             },
@@ -116,7 +123,7 @@ class _NavbarState extends State<Navbar> {
           ListTile(
             
             leading: const SizedBox(),
-            title: const Text("О нас"),
+            title: const Text("О нас", style: TextStyle(fontFamily: "bebasRegular", color: appBarBackground, fontSize: 20),),
             onTap: (){
               Navigator.pushReplacementNamed(context, '/about');
             },
@@ -125,7 +132,7 @@ class _NavbarState extends State<Navbar> {
           ListTile(
             
             leading: const SizedBox(),
-            title: const Text("Контакты"),
+            title: const Text("Контакты", style: TextStyle(fontFamily: "bebasRegular", color: appBarBackground, fontSize: 20),),
             onTap: (){
               Navigator.pushReplacementNamed(context, '/contacts');
             },
@@ -136,16 +143,16 @@ class _NavbarState extends State<Navbar> {
           auth.currentUser != null?
           ListTile(
             
-            leading: const Icon(Icons.logout_rounded),
-            title: const Text("Выйти"),
+            leading: const Icon(Icons.logout_rounded, color: appBarBackground),
+            title: const Text("Выйти", style: TextStyle(fontFamily: "bebasRegular", color: appBarBackground, fontSize: 20),),
             onTap: (){
               AuthService().logOut();
               Navigator.pushReplacementNamed(context, '/auth');
             },
             
           ) : ListTile(
-            leading: const Icon(Icons.login),
-            title: const Text("Войти"),
+            leading: const Icon(Icons.login, color: appBarBackground),
+            title: const Text("Войти", style: TextStyle(fontFamily: "bebasRegular", color: appBarBackground, fontSize: 20),),
             onTap: (){
               Navigator.pushReplacementNamed(context, '/auth');
             },

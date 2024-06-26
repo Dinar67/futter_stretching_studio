@@ -10,3 +10,5 @@ File? selectImage;
 UploadTask? uploadTask;
 String? typeItem;
 DocumentSnapshot? selectedItem;
+
+DocumentSnapshot? userProfile;
