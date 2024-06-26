@@ -26,7 +26,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   AuthService authService = AuthService();
   ProfileCollection profileCollection = ProfileCollection();
   bool visibility = false;
-  final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey();
+  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_stretching_studio/database/collections/ProfileCollection';
 import 'package:flutter_stretching_studio/database/firebase_auth/user.dart';

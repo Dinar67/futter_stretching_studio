@@ -76,9 +76,8 @@ class ProfileCollection {
     } catch (e) {
       return;
     }
-
-  Future<void> getUserProfile() async{
-    globals.userProfile = await db.collection['profiles'].docs(auth.currentUser).get();
   }
-}
+  Future<void> getUserProfile() async{
+    globals.userProfile = await _firebaseFirestore.collection['profiles'].docs(auth.currentUser).get();
+  }
 }

@@ -162,7 +162,7 @@ class _ProfilePageState extends State<ProfilePage> {
     nameController.text = userDoc['name'];
     patronymicController.text = userDoc['patronymic'];
     phoneController.text = userDoc['phone'];
-    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseAuth auth = FirebaseAuth.instance;
     ToastContext().init(context);
     return Scaffold(
       appBar: AppBar(

@@ -19,8 +19,7 @@ class _AuthPageState extends State<AuthPage> {
   AuthService authService = AuthService();
 
 
-  final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {

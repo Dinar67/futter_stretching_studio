@@ -35,8 +35,9 @@ class ImageStorage {
   Future deleteImageStorage() async {
     try {
 
-      if(auth.currentUser == null)
+      if(auth.currentUser == null) {
         return;
+      }
 
       final String userId = auth.currentUser!.uid.toString();
       final DocumentSnapshot documentSnapshot = await bd.collection('profiles').doc(userId).get();
@@ -45,9 +46,9 @@ class ImageStorage {
         return;
       }
       final fileUrl = documentSnapshot['image'];
-      var filePath = fileUrl.replaceAll(new RegExp(r'https://firebasestorage.googleapis.com/v0/b/stretching-studio-1eb66.appspot.com/o/'), '');
-      filePath = filePath.replaceAll(new RegExp(r'%2F'), '/');
-      filePath = filePath.replaceAll(new RegExp(r'(\?alt).*'), '');
+      var filePath = fileUrl.replaceAll(RegExp(r'https://firebasestorage.googleapis.com/v0/b/stretching-studio-1eb66.appspot.com/o/'), '');
+      filePath = filePath.replaceAll(RegExp(r'%2F'), '/');
+      filePath = filePath.replaceAll(RegExp(r'(\?alt).*'), '');
       await bd.collection('profiles').doc(userId).get();
       documentSnapshot.reference.update({'image':''});
       final fileRef = storageRef.child(filePath);
