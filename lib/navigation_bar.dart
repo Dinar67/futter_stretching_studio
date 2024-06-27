@@ -105,14 +105,11 @@ class _NavbarState extends State<Navbar> {
             title: const Text("Преподаватели",
              style: TextStyle(fontFamily: "bebasRegular", color: appBarBackground, fontSize: 20)),
             onTap: (){
-              Navigator.pushReplacementNamed(context, '/list');
+              Navigator.pushReplacementNamed(context, '/teacher');
             },
             
           ),
-          
-          
           ListTile(
-            
             leading: const Icon(Icons.my_library_books_rounded, color: appBarBackground,),
             title: const Text("Мои занятия", style: TextStyle(fontFamily: "bebasRegular", color: appBarBackground, fontSize: 20),),
             onTap: (){

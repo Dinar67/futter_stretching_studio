@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stretching_studio/colors.dart';
+import 'package:flutter_stretching_studio/widgets/app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutUs extends StatefulWidget {
@@ -13,27 +14,7 @@ class _AboutUsState extends State<AboutUs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leadingWidth: 180,
-        leading: Row(
-          children: [
-            const SizedBox(width: 10),
-            Image.asset('assets/images/logo.png')
-          ],
-        ),
-        iconTheme: const IconThemeData(
-          color: Colors.white
-        ),
-        backgroundColor: appBarBackground,
-        actions: [
-          IconButton(onPressed: (){
-            Navigator.popAndPushNamed(context, '/');
-          },
-          icon: const Icon(Icons.arrow_forward_ios_rounded, color: Colors.white,)
-          )
-        ],
-      ),
-
+      appBar: appBar(context),
       body: 
       SingleChildScrollView(child: 
         Container(
@@ -42,7 +23,7 @@ class _AboutUsState extends State<AboutUs> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('ПРО НАШУ КОМПАНИЮ', style: TextStyle(
+              const Text('О НАШЕЙ СТУДИИ', style: TextStyle(
                 color: appBarBackground,
                 fontWeight: FontWeight.bold,
                 fontSize: 18
@@ -53,9 +34,7 @@ class _AboutUsState extends State<AboutUs> {
               ),
               const Text(
                 // ignore: prefer_interpolation_to_compose_strings, prefer_adjacent_string_concatenation
-                'Мы являемся ведущей компанией в области продажи техники и предлагаем широкий ассортимент продуктов,' +
-                 'чтобы удовлетворить различные потребности наших клиентов. Мы предлагаем самые последние модели и' +
-                 ' инновационные устройства от ведущих производителей, чтобы обеспечить нашим клиентам высокое качество и надежность.',
+                "Наша студия растяжки - это место, где вы можете найти мир и равновесие в своей жизни. Мы создали уникальную атмосферу, которая поможет вам расслабиться и достичь новых высот в вашем физическом и эмоциональном благополучии. Наш опытный персонал и современное оборудование обеспечат вам безопасное и эффективное обучение.",
                 style: TextStyle(
                   color: lightAppBarBackground
                 ),
@@ -74,9 +53,7 @@ class _AboutUsState extends State<AboutUs> {
               ),
               const Text(
                 // ignore: prefer_interpolation_to_compose_strings, prefer_adjacent_string_concatenation
-                'Наша команда экспертов всегда готова предоставить профессиональную консультацию и помочь вам выбрать оптимальное решение,' +
-                 'соответствующее вашим потребностям и бюджету. Мы сотрудничаем с частными лицами, фирмами и организациями,' +
-                  'обеспечивая высокий уровень обслуживания и гарантируя полное удовлетворение наших клиентов.',
+                'Наша команда - это группа опытных и страстных инструкторов, которые посвятили свою жизнь развитию и улучшению физического и эмоционального благополучия людей. Мы постоянно обучаемся и совершенствуем свои навыки, чтобы обеспечить вам лучший опыт растяжки. Наша команда - это ваше поддержка на пути к здоровью и счастью.',
                 style: TextStyle(
                   color: lightAppBarBackground
                 ),
@@ -95,21 +72,12 @@ class _AboutUsState extends State<AboutUs> {
               ),
               const Text(
                 // ignore: prefer_interpolation_to_compose_strings
-                'Наша цель - сделать вашу покупку простой, безопасной и приятной, обеспечивая высокое качество продукции и качественное обслуживание.',
+                'Наша цель - создать сообщество, где люди могут поддерживать и вдохновлять друг друга на пути к здоровью и счастью.',
                 style: TextStyle(
                   color: lightAppBarBackground
                 ),
               ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 120,
-                  ),
-                Image.asset('assets/logo.png'),
-              ],),
-            
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -119,7 +87,7 @@ class _AboutUsState extends State<AboutUs> {
                       await launchUrl(url);
                     },
                     backgroundColor: const Color.fromARGB(0, 255, 255, 255),
-                    child: Image.asset('assets/WK.png'),
+                    child: Image.asset('assets/images/VK.png'),
                   ),
                   FloatingActionButton(
                     onPressed: () async {
@@ -127,7 +95,7 @@ class _AboutUsState extends State<AboutUs> {
                       await launchUrl(url);
                     },
                     backgroundColor: const Color.fromARGB(0, 255, 255, 255),
-                    child: Image.asset('assets/YouTube.png'),
+                    child: Image.asset('assets/images/YouTube-100.png'),
                   ),
                   FloatingActionButton(
                     onPressed: () async {
@@ -135,8 +103,8 @@ class _AboutUsState extends State<AboutUs> {
                       await launchUrl(url);
                       
                     },
-                    backgroundColor: const Color.fromARGB(0, 255, 255, 255),
-                    child: Image.asset('assets/Telegram.png'),
+                    backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                    child: Image.asset('assets/images/Telegram.png'),
                   )
                 ],
               )

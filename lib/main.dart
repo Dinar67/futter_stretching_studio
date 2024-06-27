@@ -1,10 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stretching_studio/pages/about_us.dart';
 import 'package:flutter_stretching_studio/pages/auth.dart';
+import 'package:flutter_stretching_studio/pages/contacts.dart';
 import 'package:flutter_stretching_studio/pages/main_screen.dart';
 import 'package:flutter_stretching_studio/pages/my_profile.dart';
 import 'package:flutter_stretching_studio/pages/reg.dart';
+import 'package:flutter_stretching_studio/pages/teacher.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +21,8 @@ void main() async {
       projectId: 'stretching-studio-1eb66',
       storageBucket: 'stretching-studio-1eb66.appspot.com',)
   );
-
+  
+  
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     initialRoute: '/',
@@ -26,6 +32,8 @@ void main() async {
     '/reg': (context) => const RegistrationPage(),
     '/profile':(context) => const ProfilePage(),
     '/about':(context) => const AboutUs(),
+    '/contacts':(context) => const Contacts(),
+    '/teacher':(context) => const TeacherPage(),
     },
   ));
 }

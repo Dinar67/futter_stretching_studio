@@ -8,6 +8,7 @@ import 'package:flutter_stretching_studio/colors.dart';
 import 'package:flutter_stretching_studio/database/collections/ProfileCollection';
 import 'package:flutter_stretching_studio/database/firebase_auth/auth_service.dart';
 import 'package:flutter_stretching_studio/database/firebase_storage/image_storage.dart';
+import 'package:flutter_stretching_studio/widgets/app_bar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter_stretching_studio/global.dart' as globals;
@@ -165,29 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     ToastContext().init(context);
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(onPressed: (){
-            Navigator.popAndPushNamed(context, '/');
-          },
-          icon: const Icon(Icons.arrow_forward_ios_rounded, color: Colors.white))
-        ],
-        leadingWidth: 190,
-        leading: Row(
-          children: 
-        [
-          const SizedBox(width: 10,),
-          SizedBox(
-             child: 
-          Image.asset('assets/images/logo.png',// Установите ширину
-            fit: BoxFit.cover,),
-          )
-        ]
-      ),
-        
-        backgroundColor: appBarBackground,
-      ),
-
+      appBar: appBar(context),
       body: SingleChildScrollView(
         child: Center(
           child: Column(

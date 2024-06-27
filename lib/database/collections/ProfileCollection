@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_stretching_studio/global.dart' as globals;
 
+
+
 class ProfileCollection {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  final FirebaseAuth auth = FirebaseAuth.instance;
+  
+
   Future<void> addProfile(
     String id,
     String surname,
@@ -77,7 +80,5 @@ class ProfileCollection {
       return;
     }
   }
-  Future<void> getUserProfile() async{
-    globals.userProfile = await _firebaseFirestore.collection['profiles'].docs(auth.currentUser).get();
-  }
+ 
 }
