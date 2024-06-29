@@ -12,3 +12,8 @@ String? typeItem;
 String? typeAction;
 DocumentSnapshot? selectedTeacher;
 Image? currentUserImage;
+
+String? imageUrl;
+DocumentSnapshot? selectedTeacherDrop;
+
+DocumentSnapshot? selectedLesson;
