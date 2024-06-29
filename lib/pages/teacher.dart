@@ -40,120 +40,121 @@ class _TeacherPageState extends State<TeacherPage> {
           return ListView.builder(
               itemCount: snapshot.data?.docs.length,
               itemBuilder: (context, int index) {
-                return 
-                  Card(
-                    margin: EdgeInsets.fromLTRB(
-                        MediaQuery.of(context).size.width * 0.05,
-                        20,
-                        MediaQuery.of(context).size.width * 0.05,
-                        10),
-                    color: appBarBackground,
-                    key: Key(snapshot.data!.docs[index].id),
-                    child: Center(
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 40,
-                              backgroundColor: Colors.white,
-                              child: snapshot.data!.docs[index].get('image') == ''
-                                  ? Image.asset('assets/images/person.png')
-                                  : ClipOval(
-                                      child: Image.network(snapshot
-                                          .data!.docs[index]
-                                          .get('image'),
-                                         fit: BoxFit.cover,
-                                         width: 200,
-                                         height: 200,
-                                        ),
-                                      
+                return Card(
+                  margin: EdgeInsets.fromLTRB(
+                      MediaQuery.of(context).size.width * 0.05,
+                      20,
+                      MediaQuery.of(context).size.width * 0.05,
+                      10),
+                  color: appBarBackground,
+                  key: Key(snapshot.data!.docs[index].id),
+                  child: Center(
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundColor: Colors.white,
+                            child: snapshot.data!.docs[index].get('image') == ''
+                                ? Image.asset('assets/images/person.png')
+                                : ClipOval(
+                                    child: Image.network(
+                                      snapshot.data!.docs[index].get('image'),
+                                      fit: BoxFit.cover,
+                                      width: 200,
+                                      height: 200,
                                     ),
-                            ),
-                            const SizedBox(width: 10),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.59,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        snapshot.data!.docs[index].get('surname'),
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'bebasRegular',
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18),
-                                      ),
-                                      Text(
-                                        snapshot.data!.docs[index].get('name'),
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'bebasRegular',
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      SizedBox(
-                                        width: 130,
-                                        height: 25,
-                                        child: FloatingActionButton(
-                                          onPressed: (){
-                                            Navigator.popAndPushNamed(context, '/');
-                                          },
-                                          backgroundColor: Colors.white,
-                                          child: const Text('Посмотреть занятия',
-                                          style: TextStyle(
-                                            color: appBarBackground,
-                                            fontFamily: 'bebasRegular',
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold
-                                          ),),
-                                          ),
-                                      )
-                                    ],
                                   ),
-                                  Column(
-                                    children: [
-                                      IconButton(
-                                          onPressed: () {
-                                            globals.typeAction = 'edit';
-                                            globals.selectedTeacher =
-                                                snapshot.data!.docs[index];
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return teacherAlert(context);
-                                                });
-                                          },
-                                          icon: const Icon(
-                                            Icons.edit,
-                                            color: Colors.white,
-                                          )),
-                                      IconButton(
-                                          onPressed: () async {
-                                            await db
-                                                .collection('teachers')
-                                                .doc(
-                                                    snapshot.data!.docs[index].id)
-                                                .delete();
-                                            Toast.show('Удалено!');
-                                          },
-                                          icon: const Icon(
-                                            Icons.delete,
-                                            color: Colors.white,
-                                          )),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
+                          const SizedBox(width: 10),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.59,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      snapshot.data!.docs[index].get('surname'),
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'bebasRegular',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
+                                    ),
+                                    Text(
+                                      snapshot.data!.docs[index].get('name'),
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'bebasRegular',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    SizedBox(
+                                      width: 130,
+                                      height: 25,
+                                      child: FloatingActionButton(
+                                        onPressed: () {
+                                          globals.selectedTeacher =
+                                              snapshot.data!.docs[index];
+                                          Navigator.popAndPushNamed(
+                                              context, '/');
+                                        },
+                                        backgroundColor: Colors.white,
+                                        child: const Text(
+                                          'Посмотреть занятия',
+                                          style: TextStyle(
+                                              color: appBarBackground,
+                                              fontFamily: 'bebasRegular',
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    IconButton(
+                                        onPressed: () {
+                                          globals.typeAction = 'edit';
+                                          globals.selectedTeacher =
+                                              snapshot.data!.docs[index];
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return teacherAlert(context);
+                                              });
+                                        },
+                                        icon: const Icon(
+                                          Icons.edit,
+                                          color: Colors.white,
+                                        )),
+                                    IconButton(
+                                        onPressed: () async {
+                                          await db
+                                              .collection('teachers')
+                                              .doc(
+                                                  snapshot.data!.docs[index].id)
+                                              .delete();
+                                          Toast.show('Удалено!');
+                                        },
+                                        icon: const Icon(
+                                          Icons.delete,
+                                          color: Colors.white,
+                                        )),
+                                  ],
+                                )
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                     ),
+                  ),
                 );
               });
         },
@@ -178,10 +179,10 @@ class _TeacherPageState extends State<TeacherPage> {
 
   Widget teacherAlert(BuildContext context) {
     ToastContext().init(context);
-    
+
     final TextEditingController nameController = TextEditingController();
     final TextEditingController surnameController = TextEditingController();
-    if(globals.typeAction == 'edit'){
+    if (globals.typeAction == 'edit') {
       nameController.text = globals.selectedTeacher!.get('name');
       surnameController.text = globals.selectedTeacher!.get('surname');
     }
@@ -189,8 +190,10 @@ class _TeacherPageState extends State<TeacherPage> {
     Future uploadFile(XFile fileName) async {
       if (globals.selectedTeacher != null &&
           globals.selectedTeacher!.get('image') != '') {
-        await FirebaseStorage.instance.refFromURL(globals.selectedTeacher!.get('image')).delete();
-        await globals.selectedTeacher!.reference.update({'image':''});
+        await FirebaseStorage.instance
+            .refFromURL(globals.selectedTeacher!.get('image'))
+            .delete();
+        await globals.selectedTeacher!.reference.update({'image': ''});
       }
       final path =
           'teachers/${globals.selectedTeacher?['name']}/${fileName.name}';
@@ -247,7 +250,6 @@ class _TeacherPageState extends State<TeacherPage> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          
           if (globals.typeAction != 'add')
             SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
@@ -307,8 +309,7 @@ class _TeacherPageState extends State<TeacherPage> {
             child: FloatingActionButton(
               onPressed: () async {
                 if (globals.typeAction == 'edit') {
-                  globals.selectedTeacher!.reference
-                      .update({
+                  globals.selectedTeacher!.reference.update({
                     'name': nameController.text,
                     'surname': surnameController.text,
                   });
