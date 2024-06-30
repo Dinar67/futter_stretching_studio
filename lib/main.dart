@@ -10,6 +10,7 @@ import 'package:flutter_stretching_studio/pages/main_screen.dart';
 import 'package:flutter_stretching_studio/pages/my_profile.dart';
 import 'package:flutter_stretching_studio/pages/reg.dart';
 import 'package:flutter_stretching_studio/pages/teacher.dart';
+import 'package:flutter_stretching_studio/global.dart' as globals;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,13 @@ void main() async {
     projectId: 'stretching-studio-1eb66',
     storageBucket: 'stretching-studio-1eb66.appspot.com',
   ));
+
+  if (FirebaseAuth.instance.currentUser != null) {
+    globals.currentUser = await FirebaseFirestore.instance
+        .collection('profiles')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+  }
 
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,

@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_stretching_studio/colors.dart';
 import 'package:flutter_stretching_studio/database/collections/ProfileCollection';
 import 'package:flutter_stretching_studio/navigation_bar.dart';
@@ -29,53 +28,74 @@ void initLang() async {
   await initializeDateFormatting('ru_RU');
 }
 
+Future setMyLessons() async {
+  if (auth.currentUser == null) {
+    return;
+  }
+  globals.myLessons!.clear();
+  DocumentSnapshot user =
+      await db.collection('profiles').doc(auth.currentUser!.uid).get();
+  QuerySnapshot querySnapshot =
+      await user.reference.collection('myLessons').get();
+  for (var doc in querySnapshot.docs) {
+    globals.myLessons!.add(doc.get('lesson'));
+  }
+}
+
 class _MainScreenState extends State<MainScreen> {
   final PageController _pageController = PageController();
   final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey();
   @override
   Widget build(BuildContext context) {
     initLang();
+    globals.myLessons = ['LbCjqSHLYAY60S7U9frt'];
+
     return Scaffold(
-      floatingActionButton: Container(
-        padding:
-            EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.1),
-        child: FloatingActionButton(
-          backgroundColor: appBarBackground,
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return alertLesson();
-                });
-          },
-        ),
-      ),
+      floatingActionButton: auth.currentUser != null &&
+              globals.currentUser!.get('role') == 'admin'
+          ? Container(
+              padding: EdgeInsets.only(
+                  right: MediaQuery.of(context).size.width * 0.1),
+              child: FloatingActionButton(
+                backgroundColor: appBarBackground,
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return alertLesson();
+                      });
+                },
+              ),
+            )
+          : const SizedBox(),
       key: _scaffoldkey,
       endDrawer: const Navbar(),
       appBar: AppBar(
         actions: [
           Stack(
             children: [
-              globals.selectedTeacher == null
+              globals.selectedTeacher != null || globals.action == "myLessons"
                   ? IconButton(
+                      onPressed: () {
+                        globals.selectedTeacher = null;
+                        globals.action = '';
+                        globals.myLessons = null;
+                        Navigator.popAndPushNamed(context, '/');
+                      },
+                      icon: const Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: Colors.white,
+                      ))
+                  : IconButton(
                       onPressed: () {
                         _scaffoldkey.currentState?.openEndDrawer();
                       },
                       icon: const Icon(
                         Icons.menu,
-                        color: Colors.white,
-                      ))
-                  : IconButton(
-                      onPressed: () {
-                        globals.selectedTeacher = null;
-                        Navigator.popAndPushNamed(context, '/');
-                      },
-                      icon: const Icon(
-                        Icons.arrow_forward_ios_rounded,
                         color: Colors.white,
                       )),
             ],
@@ -103,14 +123,23 @@ class _MainScreenState extends State<MainScreen> {
                         height: MediaQuery.of(context).size.height * 0.75,
                         child: StreamBuilder(
                             stream: globals.selectedTeacher == null
-                                ? db
-                                    .collection('lessons')
-                                    .where('date',
-                                        isEqualTo: DateFormat('dd.MM')
-                                            .format(DateTime.now()
-                                                .add(Duration(days: i)))
-                                            .toString())
-                                    .snapshots()
+                                ? (globals.action != 'myLessons'
+                                    ? db
+                                        .collection('lessons')
+                                        .where('date',
+                                            isEqualTo: DateFormat('dd.MM')
+                                                .format(DateTime.now()
+                                                    .add(Duration(days: i)))
+                                                .toString())
+                                        .snapshots()
+                                    : globals.currentUser!.reference
+                                        .collection('myLessons')
+                                        .where('date',
+                                            isEqualTo: DateFormat('dd.MM')
+                                                .format(DateTime.now()
+                                                    .add(Duration(days: i)))
+                                                .toString())
+                                        .snapshots())
                                 : db
                                     .collection('lessons')
                                     .where('date',
@@ -215,35 +244,65 @@ class _MainScreenState extends State<MainScreen> {
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.3,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.05,
-                                                child: FloatingActionButton(
-                                                  onPressed: () {
-                                                    globals.selectedLesson =
-                                                        snapshot
-                                                            .data!.docs[index];
-                                                    Navigator.popAndPushNamed(
-                                                        context, '/lesson');
-                                                  },
-                                                  backgroundColor: Colors.white,
-                                                  child: const Text(
-                                                      'Записаться',
-                                                      style: TextStyle(
-                                                          color:
-                                                              appBarBackground,
-                                                          fontFamily:
-                                                              'bebasRegular',
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.bold)),
-                                                ),
+                                              Row(
+                                                children: [
+                                                  auth.currentUser != null &&
+                                                          globals.currentUser!
+                                                                  .get(
+                                                                      'role') ==
+                                                              'admin'
+                                                      ? IconButton(
+                                                          onPressed: () async {
+                                                            snapshot
+                                                                .data!
+                                                                .docs[index]
+                                                                .reference
+                                                                .delete();
+                                                            Toast.show(
+                                                                'Успешно удалено!');
+                                                          },
+                                                          icon: Icon(
+                                                            Icons.delete,
+                                                            color: Colors.white,
+                                                          ))
+                                                      : const SizedBox(),
+                                                  SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.3,
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.05,
+                                                    child: FloatingActionButton(
+                                                      onPressed: () {
+                                                        globals.selectedLesson =
+                                                            snapshot.data!
+                                                                .docs[index];
+                                                        Navigator
+                                                            .popAndPushNamed(
+                                                                context,
+                                                                '/lesson');
+                                                      },
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                      child: const Text(
+                                                          'Записаться',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  appBarBackground,
+                                                              fontFamily:
+                                                                  'bebasRegular',
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold)),
+                                                    ),
+                                                  ),
+                                                ],
                                               )
                                             ],
                                           ),
@@ -615,7 +674,7 @@ class _alertLessonState extends State<alertLesson> {
                   'date': DateFormat('dd.MM').format(_selectedDate)
                 });
                 Navigator.pop(context);
-                Toast.show('Товар успешно добавлен!');
+                Toast.show('Занятие успешно добавлено!');
 
                 globals.imageUrl = "";
                 globals.selectedTeacherDrop = null;

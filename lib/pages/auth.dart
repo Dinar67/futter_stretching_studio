@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stretching_studio/colors.dart';
 import 'package:flutter_stretching_studio/database/firebase_auth/auth_service.dart';
 import 'package:toast/toast.dart';
-
+import 'package:flutter_stretching_studio/global.dart' as globals;
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -18,7 +19,6 @@ class _AuthPageState extends State<AuthPage> {
   TextEditingController passController = TextEditingController();
   AuthService authService = AuthService();
 
-
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey();
 
   @override
@@ -29,36 +29,39 @@ class _AuthPageState extends State<AuthPage> {
       appBar: AppBar(
         backgroundColor: appBarBackground,
         actions: [
-          IconButton(onPressed: (){
-            Navigator.popAndPushNamed(context, '/');
-          },
-          icon: const Icon(Icons.arrow_forward_ios_rounded, color: Colors.white))
+          IconButton(
+              onPressed: () {
+                Navigator.popAndPushNamed(context, '/');
+              },
+              icon: const Icon(Icons.arrow_forward_ios_rounded,
+                  color: Colors.white))
         ],
         iconTheme: const IconThemeData(color: Colors.white),
         leadingWidth: 190,
-        leading: Row(
-          children: 
-        [
-          const SizedBox(width: 10,),
+        leading: Row(children: [
+          const SizedBox(
+            width: 10,
+          ),
           SizedBox(
-             child: 
-          Image.asset('assets/images/logo.png',// Установите высоту
-            fit: BoxFit.cover,),
+            child: Image.asset(
+              'assets/images/logo.png', // Установите высоту
+              fit: BoxFit.cover,
+            ),
           )
-        ]
-      ),
-        
+        ]),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("Добро пожаловать!", style: TextStyle(
-              color: appBarBackground,
-              fontSize: 35,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'bebasRegular'
-            ),),
+            const Text(
+              "Добро пожаловать!",
+              style: TextStyle(
+                  color: appBarBackground,
+                  fontSize: 35,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'bebasRegular'),
+            ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.1,
             ),
@@ -155,6 +158,13 @@ class _AuthPageState extends State<AuthPage> {
                     if (user == null) {
                       Toast.show("Неправильный Email/Пароль!");
                     } else {
+                      if (FirebaseAuth.instance.currentUser != null) {
+                        globals.currentUser = await FirebaseFirestore.instance
+                            .collection('profiles')
+                            .doc(FirebaseAuth.instance.currentUser!.uid)
+                            .get();
+                      }
+
                       // ignore: use_build_context_synchronously
                       Navigator.popAndPushNamed(context, '/');
                       Toast.show("Вы вошли!");
@@ -162,13 +172,14 @@ class _AuthPageState extends State<AuthPage> {
                   }
                 },
                 backgroundColor: appBarBackground,
-                child: const Text('Войти', style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'bebasRegular',
-                  fontSize: 18
-                ),),
-                  
+                child: const Text(
+                  'Войти',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'bebasRegular',
+                      fontSize: 18),
+                ),
               ),
             ),
             SizedBox(
@@ -177,9 +188,10 @@ class _AuthPageState extends State<AuthPage> {
             InkWell(
               child: const Text(
                 'Нет аккаунта? Зарегистрируйтесь!',
-                style: TextStyle(color: appBarBackground,
-                fontFamily: 'bebasRegular',
-                fontSize: 16),
+                style: TextStyle(
+                    color: appBarBackground,
+                    fontFamily: 'bebasRegular',
+                    fontSize: 16),
               ),
               onTap: () => Navigator.popAndPushNamed(context, '/reg'),
             ),

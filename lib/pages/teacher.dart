@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stretching_studio/colors.dart';
@@ -118,34 +119,43 @@ class _TeacherPageState extends State<TeacherPage> {
                                 ),
                                 Column(
                                   children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          globals.typeAction = 'edit';
-                                          globals.selectedTeacher =
-                                              snapshot.data!.docs[index];
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return teacherAlert(context);
-                                              });
-                                        },
-                                        icon: const Icon(
-                                          Icons.edit,
-                                          color: Colors.white,
-                                        )),
-                                    IconButton(
-                                        onPressed: () async {
-                                          await db
-                                              .collection('teachers')
-                                              .doc(
-                                                  snapshot.data!.docs[index].id)
-                                              .delete();
-                                          Toast.show('Удалено!');
-                                        },
-                                        icon: const Icon(
-                                          Icons.delete,
-                                          color: Colors.white,
-                                        )),
+                                    FirebaseAuth.instance.currentUser != null &&
+                                            globals.currentUser!.get('role') ==
+                                                'admin'
+                                        ? IconButton(
+                                            onPressed: () {
+                                              globals.typeAction = 'edit';
+                                              globals.selectedTeacher =
+                                                  snapshot.data!.docs[index];
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return teacherAlert(
+                                                        context);
+                                                  });
+                                            },
+                                            icon: const Icon(
+                                              Icons.edit,
+                                              color: Colors.white,
+                                            ))
+                                        : const SizedBox(),
+                                    FirebaseAuth.instance.currentUser != null &&
+                                            globals.currentUser!.get('role') ==
+                                                'admin'
+                                        ? IconButton(
+                                            onPressed: () async {
+                                              await db
+                                                  .collection('teachers')
+                                                  .doc(snapshot
+                                                      .data!.docs[index].id)
+                                                  .delete();
+                                              Toast.show('Удалено!');
+                                            },
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              color: Colors.white,
+                                            ))
+                                        : const SizedBox(),
                                   ],
                                 )
                               ],
@@ -159,18 +169,21 @@ class _TeacherPageState extends State<TeacherPage> {
               });
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          globals.typeAction = 'add';
-          showDialog(
-              context: context,
-              builder: (context) {
-                return teacherAlert(context);
-              });
-        },
-        backgroundColor: appBarBackground,
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
+      floatingActionButton: FirebaseAuth.instance.currentUser != null &&
+              globals.currentUser!.get('role') == 'admin'
+          ? FloatingActionButton(
+              onPressed: () {
+                globals.typeAction = 'add';
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return teacherAlert(context);
+                    });
+              },
+              backgroundColor: appBarBackground,
+              child: const Icon(Icons.add, color: Colors.white),
+            )
+          : const SizedBox(),
     );
   }
 

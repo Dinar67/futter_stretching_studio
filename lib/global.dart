@@ -17,3 +17,7 @@ String? imageUrl;
 DocumentSnapshot? selectedTeacherDrop;
 
 DocumentSnapshot? selectedLesson;
+
+List<String>? myLessons;
+String? action;
+DocumentSnapshot? currentUser;
